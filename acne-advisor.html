@@ -1,0 +1,999 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Skin Intel — Acne Advisor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Mono:wght@300;400;500&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cream: #F5EFE6;
+    --warm: #E8D5C0;
+    --blush: #C4896F;
+    --terracotta: #A0522D;
+    --deep: #2C1810;
+    --mid: #6B3A2A;
+    --soft: #F9F4EE;
+    --accent: #D4956A;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+
+  body {
+    background: var(--cream);
+    color: var(--deep);
+    font-family: 'DM Sans', sans-serif;
+    min-height: 100vh;
+  }
+
+  body::before {
+    content: '';
+    position: fixed;
+    inset: 0;
+    background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+    pointer-events: none;
+    z-index: 999;
+    opacity: 0.4;
+  }
+
+  header {
+    padding: 3rem 2rem 2rem;
+    text-align: center;
+    border-bottom: 1px solid var(--warm);
+  }
+
+  .eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    color: var(--blush);
+    margin-bottom: 0.75rem;
+  }
+
+  h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2.2rem, 6vw, 3.5rem);
+    font-weight: 700;
+    line-height: 1.05;
+    color: var(--deep);
+  }
+
+  h1 em { font-style: italic; color: var(--terracotta); }
+
+  .subtitle {
+    margin-top: 0.75rem;
+    font-size: 0.9rem;
+    color: var(--mid);
+    font-weight: 300;
+    max-width: 420px;
+    margin-inline: auto;
+    line-height: 1.6;
+  }
+
+  .how-it-works {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+    flex-wrap: wrap;
+  }
+
+  .step {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.78rem;
+    color: var(--mid);
+    font-family: 'DM Mono', monospace;
+  }
+
+  .step-num {
+    width: 22px; height: 22px;
+    border-radius: 50%;
+    background: var(--terracotta);
+    color: white;
+    font-size: 0.65rem;
+    display: flex; align-items: center; justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .step-arrow { color: var(--warm); font-size: 0.8rem; }
+
+  .container {
+    max-width: 680px;
+    margin: 0 auto;
+    padding: 2.5rem 1.5rem 4rem;
+  }
+
+  .section {
+    margin-bottom: 2.5rem;
+    animation: fadeUp 0.5s ease both;
+  }
+
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(16px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+
+  .section:nth-child(1){animation-delay:.05s}.section:nth-child(2){animation-delay:.1s}
+  .section:nth-child(3){animation-delay:.15s}.section:nth-child(4){animation-delay:.2s}
+  .section:nth-child(5){animation-delay:.25s}.section:nth-child(6){animation-delay:.3s}
+  .section:nth-child(7){animation-delay:.35s}.section:nth-child(8){animation-delay:.4s}
+  .section:nth-child(9){animation-delay:.45s}
+
+  .section-label {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+    margin-bottom: 1rem;
+  }
+
+  .section-num {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: var(--blush);
+    background: var(--warm);
+    padding: 0.2rem 0.5rem;
+    border-radius: 3px;
+    letter-spacing: 0.05em;
+    flex-shrink: 0;
+  }
+
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.05rem;
+    font-weight: 700;
+    color: var(--deep);
+  }
+
+  label {
+    display: block;
+    font-size: 0.78rem;
+    font-weight: 500;
+    color: var(--mid);
+    margin-bottom: 0.35rem;
+    letter-spacing: 0.02em;
+  }
+
+  input[type="text"],
+  input[type="number"],
+  select,
+  textarea {
+    width: 100%;
+    background: var(--soft);
+    border: 1.5px solid var(--warm);
+    border-radius: 8px;
+    padding: 0.7rem 0.9rem;
+    font-family: 'DM Sans', sans-serif;
+    font-size: 0.88rem;
+    color: var(--deep);
+    transition: border-color 0.2s, box-shadow 0.2s;
+    outline: none;
+    -webkit-appearance: none;
+    appearance: none;
+  }
+
+  input:focus, select:focus, textarea:focus {
+    border-color: var(--blush);
+    box-shadow: 0 0 0 3px rgba(196,137,111,0.12);
+  }
+
+  textarea { resize: vertical; min-height: 80px; line-height: 1.5; }
+
+  select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23A0522D' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.9rem center;
+    padding-right: 2.5rem;
+    cursor: pointer;
+  }
+
+  .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 0.75rem; }
+  .row-3 { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 0.75rem; }
+  .field { margin-bottom: 0.75rem; }
+
+  .chip-group { display: flex; flex-wrap: wrap; gap: 0.5rem; margin-top: 0.1rem; }
+
+  .chip {
+    background: var(--soft);
+    border: 1.5px solid var(--warm);
+    border-radius: 20px;
+    padding: 0.4rem 0.9rem;
+    font-size: 0.8rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    color: var(--mid);
+    font-family: 'DM Sans', sans-serif;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+  }
+
+  .chip.active { background: var(--blush); border-color: var(--blush); color: white; font-weight: 500; }
+  .chip:hover:not(.active) { border-color: var(--blush); color: var(--blush); }
+
+  .divider { height: 1px; background: var(--warm); margin: 0.5rem 0 2rem; }
+
+  .cta-wrap { text-align: center; margin-top: 1rem; }
+
+  button#generateBtn {
+    background: var(--terracotta);
+    color: white;
+    border: none;
+    padding: 1rem 2.5rem;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    font-style: italic;
+    border-radius: 50px;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: 0 4px 20px rgba(160,82,45,0.3);
+    width: 100%;
+    max-width: 360px;
+  }
+
+  button#generateBtn:hover {
+    background: var(--mid);
+    transform: translateY(-2px);
+    box-shadow: 0 8px 28px rgba(160,82,45,0.35);
+  }
+
+  /* Result panel */
+  #resultPanel {
+    display: none;
+    margin-top: 2.5rem;
+    animation: fadeUp 0.4s ease both;
+  }
+
+  .result-card {
+    background: var(--deep);
+    border-radius: 16px;
+    overflow: hidden;
+  }
+
+  .result-header {
+    background: var(--terracotta);
+    padding: 1.25rem 1.5rem;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .result-header-left {
+    display: flex;
+    align-items: center;
+    gap: 0.75rem;
+  }
+
+  .result-header span {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.7rem;
+    letter-spacing: 0.15em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.9);
+  }
+
+  #promptBox {
+    padding: 1.25rem 1.5rem;
+    color: var(--warm);
+    font-size: 0.82rem;
+    line-height: 1.75;
+    font-family: 'DM Mono', monospace;
+    white-space: pre-wrap;
+    max-height: 340px;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--blush) var(--deep);
+  }
+
+  .copy-btn {
+    background: rgba(255,255,255,0.15);
+    border: 1.5px solid rgba(255,255,255,0.3);
+    color: white;
+    padding: 0.4rem 1rem;
+    border-radius: 20px;
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex-shrink: 0;
+  }
+
+  .copy-btn:hover { background: rgba(255,255,255,0.25); }
+  .copy-btn.copied { background: #4CAF50; border-color: #4CAF50; }
+
+  .ai-links {
+    padding: 1.25rem 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+    align-items: center;
+  }
+
+  .ai-links-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    width: 100%;
+    margin-bottom: 0.2rem;
+  }
+
+  .ai-link {
+    background: rgba(255,255,255,0.07);
+    border: 1px solid rgba(255,255,255,0.15);
+    color: var(--warm);
+    padding: 0.45rem 1rem;
+    border-radius: 20px;
+    font-size: 0.8rem;
+    text-decoration: none;
+    font-family: 'DM Sans', sans-serif;
+    transition: all 0.15s;
+    display: flex;
+    align-items: center;
+    gap: 0.4rem;
+  }
+
+  .ai-link:hover { background: rgba(255,255,255,0.14); color: white; }
+
+  .ai-link svg { width: 14px; height: 14px; opacity: 0.7; }
+
+  @media (max-width: 480px) {
+    .row-2, .row-3 { grid-template-columns: 1fr; }
+    header { padding: 2rem 1.5rem 1.5rem; }
+    .how-it-works { gap: 0.75rem; }
+    .step-arrow { display: none; }
+  }
+</style>
+</head>
+<body>
+
+<header>
+  <p class="eyebrow">Personalised Skin Analysis</p>
+  <h1>Know Your <em>Skin.</em></h1>
+  <p class="subtitle">Fill in your details, get a custom-built prompt, then paste it into any AI for a deep personalised acne analysis.</p>
+  <div class="how-it-works">
+    <div class="step"><div class="step-num">1</div>Fill in your details</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><div class="step-num">2</div>Get your prompt</div>
+    <div class="step-arrow">→</div>
+    <div class="step"><div class="step-num">3</div>Paste into ChatGPT / Claude</div>
+  </div>
+</header>
+
+<div class="container">
+
+  <!-- 01 About You -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">01</span>
+      <span class="section-title">About You</span>
+    </div>
+    <div class="row-3">
+      <div class="field">
+        <label>Age</label>
+        <input type="number" id="age" placeholder="e.g. 22" min="10" max="80">
+      </div>
+      <div class="field">
+        <label>Biological Sex</label>
+        <select id="sex">
+          <option value="">Select</option>
+          <option>Male</option>
+          <option>Female</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Skin Type</label>
+        <select id="skinType">
+          <option value="">Select</option>
+          <option>Oily</option>
+          <option>Dry</option>
+          <option>Combination</option>
+          <option>Normal</option>
+          <option>Sensitive</option>
+          <option>Not sure</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 02 Acne Profile -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">02</span>
+      <span class="section-title">Your Acne</span>
+    </div>
+    <div class="field">
+      <label>Where does acne appear most?</label>
+      <div class="chip-group" id="acneLocation">
+        <div class="chip" onclick="toggle(this)">Forehead</div>
+        <div class="chip" onclick="toggle(this)">Nose</div>
+        <div class="chip" onclick="toggle(this)">Cheeks</div>
+        <div class="chip" onclick="toggle(this)">Chin / Jawline</div>
+        <div class="chip" onclick="toggle(this)">Back</div>
+        <div class="chip" onclick="toggle(this)">Chest</div>
+        <div class="chip" onclick="toggle(this)">Shoulders</div>
+        <div class="chip" onclick="toggle(this)">Neck</div>
+      </div>
+    </div>
+    <div class="field" style="margin-top:0.75rem">
+      <label>Type of breakouts</label>
+      <div class="chip-group" id="acneType">
+        <div class="chip" onclick="toggle(this)">Whiteheads</div>
+        <div class="chip" onclick="toggle(this)">Blackheads</div>
+        <div class="chip" onclick="toggle(this)">Papules (red bumps)</div>
+        <div class="chip" onclick="toggle(this)">Pustules (pus-filled)</div>
+        <div class="chip" onclick="toggle(this)">Cysts / nodules</div>
+        <div class="chip" onclick="toggle(this)">Fungal-looking (small, uniform)</div>
+      </div>
+    </div>
+    <div class="row-2" style="margin-top:0.75rem">
+      <div class="field">
+        <label>Severity (1 = mild, 10 = severe)</label>
+        <input type="number" id="severity" placeholder="1–10" min="1" max="10">
+      </div>
+      <div class="field">
+        <label>How long have you had acne?</label>
+        <select id="duration">
+          <option value="">Select</option>
+          <option>Less than 3 months</option>
+          <option>3–6 months</option>
+          <option>6–12 months</option>
+          <option>1–3 years</option>
+          <option>3+ years</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Pattern / timing</label>
+      <div class="chip-group" id="pattern">
+        <div class="chip" onclick="toggle(this)">Consistent year-round</div>
+        <div class="chip" onclick="toggle(this)">Worse before period</div>
+        <div class="chip" onclick="toggle(this)">Worse in summer/heat</div>
+        <div class="chip" onclick="toggle(this)">Worse when stressed</div>
+        <div class="chip" onclick="toggle(this)">Comes in random waves</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 03 Hydration -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">03</span>
+      <span class="section-title">Hydration</span>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Water intake per day</label>
+        <select id="water">
+          <option value="">Select</option>
+          <option>Less than 1L</option>
+          <option>1–1.5L</option>
+          <option>1.5–2L</option>
+          <option>2–3L</option>
+          <option>3L+</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Daily caffeine</label>
+        <select id="caffeine">
+          <option value="">Select</option>
+          <option>None</option>
+          <option>1 coffee/tea</option>
+          <option>2–3 coffees/teas</option>
+          <option>4+ coffees/teas</option>
+          <option>Energy drinks daily</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Alcohol consumption</label>
+      <select id="alcohol">
+        <option value="">Select</option>
+        <option>Never</option>
+        <option>Occasionally (1–2x/month)</option>
+        <option>Weekly (1–2 drinks)</option>
+        <option>Weekly (3–5 drinks)</option>
+        <option>Daily</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 04 Diet -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">04</span>
+      <span class="section-title">Diet & Nutrition</span>
+    </div>
+    <div class="field">
+      <label>Describe your typical daily diet</label>
+      <textarea id="diet" placeholder="e.g. Eggs and toast for breakfast, chicken and rice for lunch, pasta for dinner. I snack on protein bars and sometimes chocolate."></textarea>
+    </div>
+    <div class="field">
+      <label>Foods you eat regularly</label>
+      <div class="chip-group" id="foods">
+        <div class="chip" onclick="toggle(this)">Dairy (milk, cheese, yogurt)</div>
+        <div class="chip" onclick="toggle(this)">Whey protein</div>
+        <div class="chip" onclick="toggle(this)">Gluten / bread / pasta</div>
+        <div class="chip" onclick="toggle(this)">Sugar / sweets</div>
+        <div class="chip" onclick="toggle(this)">Processed / fast food</div>
+        <div class="chip" onclick="toggle(this)">Fried / greasy food</div>
+        <div class="chip" onclick="toggle(this)">High-GI foods (white rice, chips)</div>
+        <div class="chip" onclick="toggle(this)">Fruits & vegetables daily</div>
+        <div class="chip" onclick="toggle(this)">Omega-3 / fatty fish</div>
+        <div class="chip" onclick="toggle(this)">Nuts & seeds</div>
+        <div class="chip" onclick="toggle(this)">Probiotic foods (kefir, yogurt)</div>
+        <div class="chip" onclick="toggle(this)">Eggs</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Supplements you take</label>
+      <div class="chip-group" id="supplements">
+        <div class="chip" onclick="toggle(this)">None</div>
+        <div class="chip" onclick="toggle(this)">Zinc</div>
+        <div class="chip" onclick="toggle(this)">Vitamin D</div>
+        <div class="chip" onclick="toggle(this)">Vitamin A / Retinol</div>
+        <div class="chip" onclick="toggle(this)">Omega-3</div>
+        <div class="chip" onclick="toggle(this)">Probiotics</div>
+        <div class="chip" onclick="toggle(this)">Biotin</div>
+        <div class="chip" onclick="toggle(this)">Creatine</div>
+        <div class="chip" onclick="toggle(this)">Multivitamin</div>
+        <div class="chip" onclick="toggle(this)">Pre-workout</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 05 Skincare -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">05</span>
+      <span class="section-title">Skincare Routine</span>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>How often do you cleanse?</label>
+        <select id="cleanse">
+          <option value="">Select</option>
+          <option>Never</option>
+          <option>Once a day</option>
+          <option>Twice a day</option>
+          <option>More than twice</option>
+          <option>Just water</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Moisturiser use</label>
+        <select id="moisturise">
+          <option value="">Select</option>
+          <option>Never</option>
+          <option>Occasionally</option>
+          <option>Daily</option>
+          <option>Twice daily</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Active ingredients you use</label>
+      <div class="chip-group" id="actives">
+        <div class="chip" onclick="toggle(this)">None</div>
+        <div class="chip" onclick="toggle(this)">Benzoyl Peroxide</div>
+        <div class="chip" onclick="toggle(this)">Salicylic Acid</div>
+        <div class="chip" onclick="toggle(this)">Retinol / Tretinoin</div>
+        <div class="chip" onclick="toggle(this)">Niacinamide</div>
+        <div class="chip" onclick="toggle(this)">AHA / Glycolic Acid</div>
+        <div class="chip" onclick="toggle(this)">Azelaic Acid</div>
+        <div class="chip" onclick="toggle(this)">Sulfur</div>
+        <div class="chip" onclick="toggle(this)">Tea Tree Oil</div>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Makeup / heavy sunscreen daily?</label>
+        <select id="makeup">
+          <option value="">Select</option>
+          <option>No</option>
+          <option>Yes, full coverage makeup</option>
+          <option>Yes, light/tinted products</option>
+          <option>Sunscreen only</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Do you pick or pop spots?</label>
+        <select id="picking">
+          <option value="">Select</option>
+          <option>Never</option>
+          <option>Rarely</option>
+          <option>Sometimes</option>
+          <option>Often / habitually</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 06 Lifestyle -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">06</span>
+      <span class="section-title">Lifestyle & Environment</span>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Daily sunlight exposure</label>
+        <select id="sunlight">
+          <option value="">Select</option>
+          <option>Almost none (indoor job)</option>
+          <option>Under 30 min</option>
+          <option>30–60 min</option>
+          <option>1–2 hours</option>
+          <option>2+ hours</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Environment cleanliness</label>
+        <select id="environment">
+          <option value="">Select</option>
+          <option>Very clean</option>
+          <option>Generally clean</option>
+          <option>Dusty / polluted city</option>
+          <option>Sweaty environment (gym, outdoors)</option>
+          <option>Industrial / oily environment</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Do you sweat heavily or often?</label>
+      <select id="sweat">
+        <option value="">Select</option>
+        <option>No, not really</option>
+        <option>Moderately</option>
+        <option>Yes, quite a lot</option>
+        <option>Yes, excessively</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Pillowcase & sleeping position</label>
+      <div class="chip-group" id="sleep_surface">
+        <div class="chip" onclick="toggle(this)">Cotton (changed rarely)</div>
+        <div class="chip" onclick="toggle(this)">Cotton (changed weekly+)</div>
+        <div class="chip" onclick="toggle(this)">Silk / satin pillowcase</div>
+        <div class="chip" onclick="toggle(this)">Sleep on stomach/side</div>
+        <div class="chip" onclick="toggle(this)">Sleep on back</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Hair & face contact</label>
+      <div class="chip-group" id="hair">
+        <div class="chip" onclick="toggle(this)">Use styling products (gel, wax)</div>
+        <div class="chip" onclick="toggle(this)">Hair touches face often</div>
+        <div class="chip" onclick="toggle(this)">Wear hats / helmets regularly</div>
+        <div class="chip" onclick="toggle(this)">No notable contact</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Phone hygiene</label>
+      <select id="phone">
+        <option value="">Select</option>
+        <option>I clean it regularly</option>
+        <option>Rarely / never clean it</option>
+        <option>I don't hold it to my face</option>
+      </select>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 07 Sleep & Stress -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">07</span>
+      <span class="section-title">Sleep & Stress</span>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Average hours of sleep</label>
+        <select id="sleepHours">
+          <option value="">Select</option>
+          <option>Less than 5h</option>
+          <option>5–6h</option>
+          <option>6–7h</option>
+          <option>7–8h</option>
+          <option>8–9h</option>
+          <option>9h+</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Sleep quality</label>
+        <select id="sleepQuality">
+          <option value="">Select</option>
+          <option>Poor (wake often, unrefreshed)</option>
+          <option>Fair (sometimes disrupted)</option>
+          <option>Good (mostly solid)</option>
+          <option>Excellent</option>
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label>Overall stress level (1 = zen, 10 = overwhelmed)</label>
+      <input type="number" id="stress" placeholder="1–10" min="1" max="10">
+    </div>
+    <div class="field">
+      <label>Main sources of stress</label>
+      <div class="chip-group" id="stressors">
+        <div class="chip" onclick="toggle(this)">Work / school</div>
+        <div class="chip" onclick="toggle(this)">Finances</div>
+        <div class="chip" onclick="toggle(this)">Relationships</div>
+        <div class="chip" onclick="toggle(this)">Health anxiety</div>
+        <div class="chip" onclick="toggle(this)">Poor sleep</div>
+        <div class="chip" onclick="toggle(this)">Social media / comparison</div>
+        <div class="chip" onclick="toggle(this)">Not much stress currently</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 08 Exercise -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">08</span>
+      <span class="section-title">Exercise</span>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Training frequency</label>
+        <select id="training">
+          <option value="">Select</option>
+          <option>Sedentary (no exercise)</option>
+          <option>1–2x per week</option>
+          <option>3–4x per week</option>
+          <option>5–6x per week</option>
+          <option>Daily</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Type of exercise</label>
+        <div class="chip-group" id="exerciseType">
+          <div class="chip" onclick="toggle(this)">Weight training</div>
+          <div class="chip" onclick="toggle(this)">Cardio</div>
+          <div class="chip" onclick="toggle(this)">HIIT</div>
+          <div class="chip" onclick="toggle(this)">Sports</div>
+          <div class="chip" onclick="toggle(this)">Walking / yoga</div>
+        </div>
+      </div>
+    </div>
+    <div class="row-2">
+      <div class="field">
+        <label>Shower after exercise?</label>
+        <select id="postWorkoutShower">
+          <option value="">Select</option>
+          <option>Always — within 15 min</option>
+          <option>Usually within an hour</option>
+          <option>Sometimes delayed</option>
+          <option>Often stay in sweaty clothes for hours</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Daily steps</label>
+        <select id="steps">
+          <option value="">Select</option>
+          <option>Under 2,000</option>
+          <option>2,000–5,000</option>
+          <option>5,000–8,000</option>
+          <option>8,000–12,000</option>
+          <option>12,000+</option>
+        </select>
+      </div>
+    </div>
+  </div>
+
+  <div class="divider"></div>
+
+  <!-- 09 Medical -->
+  <div class="section">
+    <div class="section-label">
+      <span class="section-num">09</span>
+      <span class="section-title">Medical & Hormonal</span>
+    </div>
+    <div class="field">
+      <label>Medications</label>
+      <div class="chip-group" id="meds">
+        <div class="chip" onclick="toggle(this)">None</div>
+        <div class="chip" onclick="toggle(this)">Oral contraceptive pill</div>
+        <div class="chip" onclick="toggle(this)">Antibiotics (for acne)</div>
+        <div class="chip" onclick="toggle(this)">Isotretinoin (Accutane)</div>
+        <div class="chip" onclick="toggle(this)">Steroids / testosterone</div>
+        <div class="chip" onclick="toggle(this)">Antidepressants / SSRIs</div>
+        <div class="chip" onclick="toggle(this)">Other prescription meds</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Any relevant diagnosed conditions?</label>
+      <div class="chip-group" id="conditions">
+        <div class="chip" onclick="toggle(this)">None known</div>
+        <div class="chip" onclick="toggle(this)">PCOS</div>
+        <div class="chip" onclick="toggle(this)">Hormonal imbalance</div>
+        <div class="chip" onclick="toggle(this)">Thyroid issues</div>
+        <div class="chip" onclick="toggle(this)">Gut issues / IBS</div>
+        <div class="chip" onclick="toggle(this)">Food intolerances</div>
+        <div class="chip" onclick="toggle(this)">Eczema / rosacea</div>
+      </div>
+    </div>
+    <div class="field">
+      <label>Family history of acne?</label>
+      <select id="genetics">
+        <option value="">Select</option>
+        <option>No family history</option>
+        <option>One parent had acne</option>
+        <option>Both parents had acne</option>
+        <option>Siblings have acne</option>
+        <option>Not sure</option>
+      </select>
+    </div>
+    <div class="field">
+      <label>Anything else to add? (optional)</label>
+      <textarea id="extra" placeholder="e.g. Recently started a new medication, moved cities, changed diet, went through a stressful period..."></textarea>
+    </div>
+  </div>
+
+  <div class="cta-wrap">
+    <button id="generateBtn" onclick="generate()">Build My Prompt →</button>
+  </div>
+
+  <!-- Result -->
+  <div id="resultPanel">
+    <div class="result-card">
+      <div class="result-header">
+        <div class="result-header-left">
+          <span>Your Personalised Prompt</span>
+        </div>
+        <button class="copy-btn" id="copyBtn" onclick="copyPrompt()">Copy Prompt</button>
+      </div>
+      <div id="promptBox"></div>
+      <div class="ai-links">
+        <div class="ai-links-label">Paste it into →</div>
+        <a class="ai-link" href="https://chat.openai.com" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M22.2819 9.8211a5.9847 5.9847 0 0 0-.5157-4.9108 6.0462 6.0462 0 0 0-6.5098-2.9A6.0651 6.0651 0 0 0 4.9807 4.1818a5.9847 5.9847 0 0 0-3.9977 2.9 6.0462 6.0462 0 0 0 .7427 7.0966 5.98 5.98 0 0 0 .511 4.9107 6.051 6.051 0 0 0 6.5146 2.9001A5.9847 5.9847 0 0 0 13.2599 24a6.0557 6.0557 0 0 0 5.7718-4.2058 5.9894 5.9894 0 0 0 3.9977-2.9001 6.0557 6.0557 0 0 0-.7475-7.0729zm-9.022 12.6081a4.4755 4.4755 0 0 1-2.8764-1.0408l.1419-.0804 4.7783-2.7582a.7948.7948 0 0 0 .3927-.6813v-6.7369l2.02 1.1686a.071.071 0 0 1 .038.052v5.5826a4.504 4.504 0 0 1-4.4945 4.4944zm-9.6607-4.1254a4.4708 4.4708 0 0 1-.5346-3.0137l.142.0852 4.783 2.7582a.7712.7712 0 0 0 .7806 0l5.8428-3.3685v2.3324a.0804.0804 0 0 1-.0332.0615L9.74 19.9502a4.4992 4.4992 0 0 1-6.1408-1.6464zM2.3408 7.8956a4.485 4.485 0 0 1 2.3655-1.9728V11.6a.7664.7664 0 0 0 .3879.6765l5.8144 3.3543-2.0201 1.1685a.0757.0757 0 0 1-.071 0l-4.8303-2.7865A4.504 4.504 0 0 1 2.3408 7.872zm16.5963 3.8558L13.1038 8.364 15.1192 7.2a.0757.0757 0 0 1 .071 0l4.8303 2.7913a4.4944 4.4944 0 0 1-.6765 8.1042v-5.6772a.79.79 0 0 0-.407-.667zm2.0107-3.0231l-.142-.0852-4.7735-2.7818a.7759.7759 0 0 0-.7854 0L9.409 9.2297V6.8974a.0662.0662 0 0 1 .0284-.0615l4.8303-2.7866a4.4992 4.4992 0 0 1 6.6802 4.66zM8.3065 12.863l-2.02-1.1638a.0804.0804 0 0 1-.038-.0567V6.0742a4.4992 4.4992 0 0 1 7.3757-3.4537l-.142.0805L8.704 5.459a.7948.7948 0 0 0-.3927.6813zm1.0976-2.3654l2.602-1.4998 2.6069 1.4998v2.9994l-2.5974 1.4997-2.6067-1.4997Z"/></svg>
+          ChatGPT
+        </a>
+        <a class="ai-link" href="https://claude.ai" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.9971 2C6.47752 2 2 6.47752 2 12C2 17.5225 6.47752 22 11.9971 22C17.5196 22 22 17.5225 22 12C22 6.47752 17.5196 2 11.9971 2ZM15.8507 16.5169L15.1718 16.1775C14.7979 15.9875 14.3621 15.9875 13.9882 16.1775L12.7507 16.8169C12.1507 17.1169 11.4507 16.6769 11.4507 16.0069V14.5869C11.4507 14.1769 11.2507 13.7969 10.9207 13.5569L9.86068 12.7769C9.27068 12.3469 9.27068 11.4769 9.86068 11.0469L10.9207 10.2669C11.2507 10.0269 11.4507 9.64688 11.4507 9.23688V7.81688C11.4507 7.14688 12.1507 6.70688 12.7507 7.00688L13.9882 7.64625C14.3621 7.83625 14.7979 7.83625 15.1718 7.64625L15.8507 7.30688C16.4507 7.00688 17.1507 7.44688 17.1507 8.11688V15.7069C17.1507 16.3769 16.4507 16.8169 15.8507 16.5169Z"/></svg>
+          Claude
+        </a>
+        <a class="ai-link" href="https://gemini.google.com" target="_blank">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 1.5C6.2 1.5 1.5 6.2 1.5 12S6.2 22.5 12 22.5 22.5 17.8 22.5 12 17.8 1.5 12 1.5zm0 9.5c-.6 2.4-2.6 4.4-5 5-.6.1-.6 1 0 1.1 2.4.6 4.4 2.6 5 5 .1.6 1 .6 1.1 0 .6-2.4 2.6-4.4 5-5 .6-.1.6-1 0-1.1-2.4-.6-4.4-2.6-5-5-.1-.7-1-.7-1.1 0z"/></svg>
+          Gemini
+        </a>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  function toggle(el) { el.classList.toggle('active'); }
+
+  function getChips(id) {
+    const active = [...document.querySelectorAll(`#${id} .chip.active`)].map(c => c.textContent);
+    return active.length ? active.join(', ') : 'None selected';
+  }
+
+  function val(id) {
+    const el = document.getElementById(id);
+    if (!el) return 'Not specified';
+    return el.value.trim() || 'Not specified';
+  }
+
+  function generate() {
+    const prompt = `You are an expert dermatologist and functional medicine practitioner. A patient has shared their detailed lifestyle data below. Your job is to:
+
+1. Identify the most likely ROOT CAUSES of their acne (ranked by probability, with the science behind each)
+2. Give a detailed, actionable 30-day improvement plan
+3. Recommend a specific AM + PM skincare routine with exact ingredient types
+4. List diet changes (what to cut and what to add, and why)
+5. Suggest lifestyle fixes (sleep, stress, exercise habits, environment)
+6. Recommend supplements with dosages and reasoning
+7. Flag any red flags that warrant seeing a dermatologist in person
+
+Be specific. Name exact ingredients, food types, and habits. Do not be vague or generic.
+
+--- PATIENT DATA ---
+
+PERSONAL:
+- Age: ${val('age')}
+- Biological sex: ${val('sex')}
+- Skin type: ${val('skinType')}
+
+ACNE PROFILE:
+- Location on body: ${getChips('acneLocation')}
+- Type of breakouts: ${getChips('acneType')}
+- Severity: ${val('severity')}/10
+- Duration: ${val('duration')}
+- Pattern / triggers: ${getChips('pattern')}
+
+HYDRATION:
+- Daily water intake: ${val('water')}
+- Caffeine: ${val('caffeine')}
+- Alcohol: ${val('alcohol')}
+
+DIET:
+- Typical daily diet: ${val('diet')}
+- Foods eaten regularly: ${getChips('foods')}
+- Supplements: ${getChips('supplements')}
+
+SKINCARE ROUTINE:
+- Cleansing frequency: ${val('cleanse')}
+- Moisturiser: ${val('moisturise')}
+- Active ingredients used: ${getChips('actives')}
+- Makeup / sunscreen: ${val('makeup')}
+- Spot picking habit: ${val('picking')}
+
+LIFESTYLE & ENVIRONMENT:
+- Daily sunlight: ${val('sunlight')}
+- Environment: ${val('environment')}
+- Sweating level: ${val('sweat')}
+- Pillowcase & sleeping position: ${getChips('sleep_surface')}
+- Hair product / face contact: ${getChips('hair')}
+- Phone hygiene: ${val('phone')}
+
+SLEEP & STRESS:
+- Sleep hours: ${val('sleepHours')}
+- Sleep quality: ${val('sleepQuality')}
+- Stress level: ${val('stress')}/10
+- Main stressors: ${getChips('stressors')}
+
+EXERCISE:
+- Training frequency: ${val('training')}
+- Exercise type: ${getChips('exerciseType')}
+- Post-workout shower: ${val('postWorkoutShower')}
+- Daily steps: ${val('steps')}
+
+MEDICAL & HORMONAL:
+- Current medications: ${getChips('meds')}
+- Diagnosed conditions: ${getChips('conditions')}
+- Family history of acne: ${val('genetics')}
+- Additional notes: ${val('extra')}
+
+--- END OF DATA ---
+
+Please now provide your full analysis and recommendations.`;
+
+    document.getElementById('promptBox').textContent = prompt;
+    document.getElementById('resultPanel').style.display = 'block';
+    document.getElementById('copyBtn').textContent = 'Copy Prompt';
+    document.getElementById('copyBtn').classList.remove('copied');
+
+    setTimeout(() => {
+      document.getElementById('resultPanel').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    }, 100);
+  }
+
+  function copyPrompt() {
+    const text = document.getElementById('promptBox').textContent;
+    navigator.clipboard.writeText(text).then(() => {
+      const btn = document.getElementById('copyBtn');
+      btn.textContent = '✓ Copied!';
+      btn.classList.add('copied');
+      setTimeout(() => {
+        btn.textContent = 'Copy Prompt';
+        btn.classList.remove('copied');
+      }, 2500);
+    });
+  }
+</script>
+</body>
+</html>
